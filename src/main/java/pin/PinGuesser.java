@@ -3,6 +3,7 @@ package pin;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class PinGuesser {
@@ -22,6 +23,14 @@ public class PinGuesser {
     }
 
     public Set<String> getPINs(String observedPin) {
+        if (observedPin.isEmpty()){
+            return Set.of();
+        }
+        if (observedPin.length() == 2) {
+            Set<String> pin1 = getPINs(observedPin.charAt(0) + "");
+            Set<String> pin2 = getPINs(observedPin.charAt(1) + "");
+            return combineSolutions(pin1, pin2);
+        }
         if (observedPin.length() == 1) {
             if (!mapPins.containsKey(observedPin)) {
                 throw new RuntimeException("Invalid pin: " + observedPin);
@@ -29,6 +38,15 @@ public class PinGuesser {
             }
             return mapPins.get(observedPin);
         }
-        return Set.of("00", "08","80","88");
+        throw new RuntimeException("Invalid pin: " + observedPin);
+    }
+
+    private Set<String> combineSolutions(Set<String> pins1, Set<String> pins2) {
+        return pins1.stream()
+                .flatMap((pin1) ->
+                        pins2
+                                .stream()
+                                .map((pin2) -> pin1 + pin2))
+                .collect(Collectors.toSet());
     }
 }

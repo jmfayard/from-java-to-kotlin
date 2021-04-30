@@ -24,8 +24,9 @@ class PinGuesserTest {
                 Arguments.of("8", Set.of( "5", "7","8","0")),
                 Arguments.of("9", Set.of("6","8","9")),
                 Arguments.of("0", Set.of("0","8")),
-                Arguments.of("00", Set.of("00", "08","80","88"))
-
+                Arguments.of("00", Set.of("00", "08","80","88")),
+                Arguments.of("09", Set.of("06", "08","09","86", "88", "89")),
+                Arguments.of("", Set.of())
         );
 
 
