@@ -1,13 +1,22 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import pin.combineSolutions
 import pin.getPINs
 import java.util.stream.Stream
 
 
 class PinGuesserTest {
+
+    @Test
+    fun testCombineSolutions() {
+        val actual = combineSolutions(setOf("12", "34"), setOf("8", "0"))
+        val expected = setOf("128", "120", "348", "340")
+        assertEquals(actual, expected)
+    }
 
     @ParameterizedTest
     @MethodSource("testSingleDigitParameters")
