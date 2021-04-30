@@ -17,8 +17,7 @@ fun getPINs(observedPin: String): Set<String> {
     require(observedPin.all { it in mapPins }) { "PIN $observedPin is invalid" }
 
     return observedPin.fold(initial = setOf("")) { acc: Set<String>, c: Char ->
-        val pinsForChar: Set<String> = mapPins[c]!!
-        combineSolutions(acc, pinsForChar)
+        combineSolutions(acc, mapPins[c]!!)
     }
 }
 
