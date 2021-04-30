@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -6,7 +7,7 @@ import pin.PinGuesser;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PinGuesserTest {
     PinGuesser pinGuesser = new PinGuesser();
@@ -26,4 +27,8 @@ class PinGuesserTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void testInvalidInput() {
+        assertThrows(RuntimeException.class, () -> pinGuesser.getPINs("😀"));
+    }
 }

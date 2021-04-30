@@ -1,15 +1,22 @@
 package pin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
 public class PinGuesser {
+    static Map<String, Set<String>> mapPins = new HashMap<>();
+    static {
+        mapPins.put("1", Set.of("1", "2", "4"));
+        mapPins.put("2", Set.of("1", "2", "3", "5"));
+        mapPins.put("3", Set.of("2", "3", "6"));
+    }
+
     public Set<String> getPINs(String observedPin) {
-        if (("2").equals(observedPin)) {
-            return Set.of("1", "2", "3", "5");
-        } else if ("3".equals(observedPin)) {
-            return Set.of("2", "3", "6");
+        if (!mapPins.containsKey(observedPin)) {
+            throw new RuntimeException("Invalid pin: " + observedPin);
         }
-        return Set.of("1", "2", "4");
+        return mapPins.get(observedPin);
     }
 }
