@@ -1,26 +1,25 @@
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import pin.PinGuesser
+import pin.getPINs
 import java.util.stream.Stream
 
 
 class PinGuesserTest {
-    val pinGuesser = PinGuesser()
 
     @ParameterizedTest
     @MethodSource("testSingleDigitParameters")
     fun testSingleDigit(observedPin: String, expected: Set<String>) {
-        val actual = pinGuesser.getPINs(observedPin)
-        Assertions.assertEquals(expected, actual)
+        assertEquals(expected, getPINs(observedPin))
     }
 
     @ParameterizedTest
     @MethodSource("invalidParams")
     fun testInvalidInput(invalidInput: String) {
-        Assertions.assertThrows(RuntimeException::class.java) {
-            pinGuesser.getPINs(invalidInput)
+        assertThrows(RuntimeException::class.java) {
+            getPINs(invalidInput)
         }
     }
 
@@ -44,7 +43,7 @@ class PinGuesserTest {
             Arguments.of("0", setOf("0", "8")),
             Arguments.of("00", setOf("00", "08", "80", "88")),
             Arguments.of("09", setOf("06", "08", "09", "86", "88", "89")),
-            Arguments.of("", emptySet<String>()),
+            Arguments.of("", setOf("")),
             Arguments.of("090", setOf("088, 880, 068, 860, 090, 898, 080, 888, 060, 868, 098, 890")),
             Arguments.of(
                 "0900",

@@ -1,6 +1,6 @@
 package pin
 
-val mapPins = mapOf(
+val mapPins: Map<String, Set<String>> = mapOf(
     "1" to setOf("1", "2", "4"),
     "2" to setOf("1", "2", "3", "5"),
     "3" to setOf("2", "3", "6"),
@@ -13,25 +13,16 @@ val mapPins = mapOf(
     "0" to setOf("0", "8"),
 )
 
-class PinGuesser {
-
-    fun getPINs(observedPin: String): Set<String> {
-        if (observedPin.isEmpty()) {
-            return setOf()
-        }
-        val pins1 = mapPins[observedPin[0].toString()]
+fun getPINs(observedPin: String): Set<String> =
+    observedPin.fold(initial = setOf("")) { acc: Set<String>, c: Char ->
+        val pinsForChar: Set<String> = mapPins[c.toString()]
             ?: throw RuntimeException("PIN $observedPin is invalid")
-        return if (observedPin.length == 1) {
-            pins1
-        } else {
-            combineSolutions(pins1, getPINs(observedPin.substring(1)))
-        }
+        combineSolutions(acc, pinsForChar)
     }
 
-    fun combineSolutions(pins1: Set<String>, pins2: Set<String>): Set<String> =
-        pins1.flatMap { pin1 ->
-            pins2.map { pin2 ->
-                "$pin1$pin2"
-            }
-        }.toSet()
-}
+fun combineSolutions(pins1: Set<String>, pins2: Set<String>): Set<String> =
+    pins1.flatMap { pin1 ->
+        pins2.map { pin2 ->
+            "$pin1$pin2"
+        }
+    }.toSortedSet()
