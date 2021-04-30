@@ -23,22 +23,17 @@ public class PinGuesser {
     }
 
     public Set<String> getPINs(String observedPin) {
-        if (observedPin.isEmpty()){
+        if (observedPin.isEmpty()) {
             return Set.of();
         }
-        if (observedPin.length() == 2) {
-            Set<String> pin1 = getPINs(observedPin.charAt(0) + "");
-            Set<String> pin2 = getPINs(observedPin.charAt(1) + "");
-            return combineSolutions(pin1, pin2);
+        Set<String> pins1 = mapPins.get(observedPin.charAt(0) + "");
+        if (pins1 == null) {
+            throw new RuntimeException("Invalid pin: " + observedPin);
+        } else if (observedPin.length() == 1) {
+            return pins1;
+        } else {
+            return combineSolutions(pins1, getPINs(observedPin.substring(1)));
         }
-        if (observedPin.length() == 1) {
-            if (!mapPins.containsKey(observedPin)) {
-                throw new RuntimeException("Invalid pin: " + observedPin);
-
-            }
-            return mapPins.get(observedPin);
-        }
-        throw new RuntimeException("Invalid pin: " + observedPin);
     }
 
     private Set<String> combineSolutions(Set<String> pins1, Set<String> pins2) {
