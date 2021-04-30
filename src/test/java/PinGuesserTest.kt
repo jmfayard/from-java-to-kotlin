@@ -1,61 +1,67 @@
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import pin.PinGuesser;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import pin.PinGuesser
+import java.util.stream.Stream
 
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PinGuesserTest {
-    PinGuesser pinGuesser = new PinGuesser();
-
-    private static Set<String> setOf(String input) {
-        return Set.of(input.split(", "));
-    }
-
-    private static Stream<Arguments> testSingleDigitParameters() {
-        return Stream.of(
-                Arguments.of("1", Set.of("1", "2", "4")),
-                Arguments.of("2", Set.of("1", "2", "3", "5")),
-                Arguments.of("3", Set.of("2", "3", "6")),
-                Arguments.of("4", Set.of("1", "4", "5", "7")),
-                Arguments.of("5", Set.of("2", "5", "4", "6", "8")),
-                Arguments.of("6", Set.of("3", "5", "6", "9")),
-                Arguments.of("7", Set.of("4", "7", "8")),
-                Arguments.of("8", Set.of("5", "7", "8", "0")),
-                Arguments.of("9", Set.of("6", "8", "9")),
-                Arguments.of("0", Set.of("0", "8")),
-                Arguments.of("00", Set.of("00", "08", "80", "88")),
-                Arguments.of("09", Set.of("06", "08", "09", "86", "88", "89")),
-                Arguments.of("", Set.of()),
-                Arguments.of("090", setOf("088, 880, 068, 860, 090, 898, 080, 888, 060, 868, 098, 890")),
-                Arguments.of("0900", setOf("8880, 8980, 8600, 8688, 0808, 0908, 0680, 8680, 0600, 0688, 8808, 8908, 0880, 0980, 0608, 8800, 8888, 8900, 8988, 8608, 0800, 0888, 0900, 0988"))
-        );
-
-    }
-
-    private static Stream<Arguments> invalidParams() {
-        return Stream.of(
-                Arguments.of("   "),
-                Arguments.of("A"),
-                Arguments.of("1A"),
-                Arguments.of("👎🏻")
-        );
-    }
+    val pinGuesser = PinGuesser()
 
     @ParameterizedTest
     @MethodSource("testSingleDigitParameters")
-    void testSingleDigit(String observedPin, Set<String> expected) {
-        Set<String> actual = pinGuesser.getPINs(observedPin);
-        assertEquals(expected, actual);
+    fun testSingleDigit(observedPin: String, expected: Set<String>) {
+        val actual = pinGuesser.getPINs(observedPin)
+        Assertions.assertEquals(expected, actual)
     }
 
     @ParameterizedTest
     @MethodSource("invalidParams")
-    void testInvalidInput(String invalidInput) {
-        assertThrows(RuntimeException.class, () -> pinGuesser.getPINs(invalidInput));
+    fun testInvalidInput(invalidInput: String) {
+        Assertions.assertThrows(RuntimeException::class.java) {
+            pinGuesser.getPINs(invalidInput)
+        }
+    }
+
+    companion object {
+
+        private fun setOf(input: String): Set<String> {
+            return setOf(*input.split(", ".toRegex()).toTypedArray())
+        }
+
+        @JvmStatic
+        fun testSingleDigitParameters(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of("1", setOf("1", "2", "4")),
+                Arguments.of("2", setOf("1", "2", "3", "5")),
+                Arguments.of("3", setOf("2", "3", "6")),
+                Arguments.of("4", setOf("1", "4", "5", "7")),
+                Arguments.of("5", setOf("2", "5", "4", "6", "8")),
+                Arguments.of("6", setOf("3", "5", "6", "9")),
+                Arguments.of("7", setOf("4", "7", "8")),
+                Arguments.of("8", setOf("5", "7", "8", "0")),
+                Arguments.of("9", setOf("6", "8", "9")),
+                Arguments.of("0", setOf("0", "8")),
+                Arguments.of("00", setOf("00", "08", "80", "88")),
+                Arguments.of("09", setOf("06", "08", "09", "86", "88", "89")),
+                Arguments.of("", emptySet<String>()),
+                Arguments.of("090", setOf("088, 880, 068, 860, 090, 898, 080, 888, 060, 868, 098, 890")),
+                Arguments.of(
+                    "0900",
+                    setOf("8880, 8980, 8600, 8688, 0808, 0908, 0680, 8680, 0600, 0688, 8808, 8908, 0880, 0980, 0608, 8800, 8888, 8900, 8988, 8608, 0800, 0888, 0900, 0988")
+                )
+            )
+        }
+
+        @JvmStatic
+        fun invalidParams(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of("   "),
+                Arguments.of("A"),
+                Arguments.of("1A"),
+                Arguments.of("👎🏻")
+            )
+        }
     }
 }
