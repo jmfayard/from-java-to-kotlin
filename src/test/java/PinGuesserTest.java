@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class PinGuesserTest {
     PinGuesser pinGuesser = new PinGuesser();
 
+    private static Set<String> setOf(String input) {
+        return Set.of(input.split(", "));
+    }
+
     private static Stream<Arguments> testSingleDigitParameters() {
         return Stream.of(
                 Arguments.of("1", Set.of("1", "2", "4")),
@@ -27,15 +31,19 @@ class PinGuesserTest {
                 Arguments.of("00", Set.of("00", "08", "80", "88")),
                 Arguments.of("09", Set.of("06", "08", "09", "86", "88", "89")),
                 Arguments.of("", Set.of()),
-                Arguments.of("090", Set.of(
-                        "060", "080", "090", "860", "880", "890",
-                        "068", "088", "098", "868", "888", "898")
-                ),
-                Arguments.of("0900", Set.of(
-                        "8880, 8980, 8600, 8688, 0808, 0908, 0680, 8680, 0600, 0688, 8808, 8908, 0880, 0980, 0608, 8800, 8888, 8900, 8988, 8608, 0800, 0888, 0900, 0988".split(", ")
-                ))
+                Arguments.of("090", setOf("088, 880, 068, 860, 090, 898, 080, 888, 060, 868, 098, 890")),
+                Arguments.of("0900", setOf("8880, 8980, 8600, 8688, 0808, 0908, 0680, 8680, 0600, 0688, 8808, 8908, 0880, 0980, 0608, 8800, 8888, 8900, 8988, 8608, 0800, 0888, 0900, 0988"))
         );
 
+    }
+
+    private static Stream<Arguments> invalidParams() {
+        return Stream.of(
+                Arguments.of("   "),
+                Arguments.of("A"),
+                Arguments.of("1A"),
+                Arguments.of("👎🏻")
+        );
     }
 
     @ParameterizedTest
@@ -45,8 +53,9 @@ class PinGuesserTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void testInvalidInput() {
-        assertThrows(RuntimeException.class, () -> pinGuesser.getPINs("A"));
+    @ParameterizedTest
+    @MethodSource("invalidParams")
+    void testInvalidInput(String invalidInput) {
+        assertThrows(RuntimeException.class, () -> pinGuesser.getPINs(invalidInput));
     }
 }

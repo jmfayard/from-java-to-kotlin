@@ -23,13 +23,16 @@ public class PinGuesser {
     }
 
     public Set<String> getPINs(String observedPin) {
+        for (char c : observedPin.toCharArray()) {
+            if (!mapPins.containsKey(c + ""))
+                throw new RuntimeException("PIN " + observedPin + " contains invalid character " + c);
+        }
+
         if (observedPin.isEmpty()) {
             return Set.of();
         }
         Set<String> pins1 = mapPins.get(observedPin.charAt(0) + "");
-        if (pins1 == null) {
-            throw new RuntimeException("Invalid pin: " + observedPin);
-        } else if (observedPin.length() == 1) {
+        if (observedPin.length() == 1) {
             return pins1;
         } else {
             return combineSolutions(pins1, getPINs(observedPin.substring(1)));
