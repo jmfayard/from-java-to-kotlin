@@ -1,13 +1,10 @@
 package pin
 
-import java.util.HashMap
-import pin.PinGuesser
-import java.lang.RuntimeException
 import java.util.stream.Collectors
 
 class PinGuesser {
     companion object {
-        var mapPins = mapOf(
+        val mapPins = mapOf(
             "1" to setOf("1", "2", "4"),
             "2" to setOf("1", "2", "3", "5"),
             "3" to setOf("2", "3", "6"),
