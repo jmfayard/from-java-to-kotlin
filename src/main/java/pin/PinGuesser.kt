@@ -36,13 +36,10 @@ class PinGuesser {
         }
     }
 
-    fun combineSolutions(pins1: Set<String>, pins2: Set<String>): Set<String> {
-        return pins1.stream()
-            .flatMap { pin1: String ->
-                pins2
-                    .stream()
-                    .map { pin2: String -> pin1 + pin2 }
+    fun combineSolutions(pins1: Set<String>, pins2: Set<String>): Set<String> =
+        pins1.flatMap { pin1 ->
+            pins2.map { pin2 ->
+                "$pin1$pin2"
             }
-            .collect(Collectors.toSet())
-    }
+        }.toSet()
 }
