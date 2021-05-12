@@ -58,4 +58,10 @@ class PinGuesserTest {
     void testInvalidInput(String invalidInput) {
         assertThrows(RuntimeException.class, () -> pinGuesser.getPINs(invalidInput));
     }
+
+    void testCombineSolutions() {
+        Set<String> actual = pinGuesser.combineSolutions(Set.of("12", "34"), Set.of("8", "0"));
+        Set<String> expected = Set.of("128", "120", "348", "340");
+        assertEquals(actual, expected);
+    }
 }

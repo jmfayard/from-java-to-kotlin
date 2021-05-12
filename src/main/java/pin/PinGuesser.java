@@ -39,7 +39,7 @@ public class PinGuesser {
         }
     }
 
-    private Set<String> combineSolutions(Set<String> pins1, Set<String> pins2) {
+    public Set<String> combineSolutions(Set<String> pins1, Set<String> pins2) {
         return pins1.stream()
                 .flatMap((pin1) ->
                         pins2
