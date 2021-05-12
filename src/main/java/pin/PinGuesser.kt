@@ -1,26 +1,28 @@
 package pin
 
 val mapPins = mapOf(
-    "1" to setOf("1", "2", "4"),
-    "2" to setOf("1", "2", "3", "5"),
-    "3" to setOf("2", "3", "6"),
-    "4" to setOf("1", "4", "5", "7"),
-    "5" to setOf("2", "5", "4", "6", "8"),
-    "6" to setOf("3", "5", "6", "9"),
-    "7" to setOf("4", "7", "8"),
-    "8" to setOf("5", "7", "8", "0"),
-    "9" to setOf("6", "8", "9"),
-    "0" to setOf("0", "8"),
+    '1' to setOf("1", "2", "4"),
+    '2' to setOf("1", "2", "3", "5"),
+    '3' to setOf("2", "3", "6"),
+    '4' to setOf("1", "4", "5", "7"),
+    '5' to setOf("2", "5", "4", "6", "8"),
+    '6' to setOf("3", "5", "6", "9"),
+    '7' to setOf("4", "7", "8"),
+    '8' to setOf("5", "7", "8", "0"),
+    '9' to setOf("6", "8", "9"),
+    '0' to setOf("0", "8"),
 )
 
 fun getPINs(observedPin: String): Set<String> {
+    require(observedPin.all { it in mapPins }) { "PIN $observedPin is invalid" }
+
     for (c in observedPin.toCharArray()) {
-        if (!mapPins.containsKey(c.toString() + "")) throw RuntimeException("PIN $observedPin contains invalid character $c")
+        if (!mapPins.containsKey(c)) throw RuntimeException("PIN $observedPin contains invalid character $c")
     }
     if (observedPin.isEmpty()) {
         return setOf()
     }
-    val pins1 = mapPins[observedPin[0].toString() + ""]!!
+    val pins1 = mapPins[observedPin[0]]!!
     return if (observedPin.length == 1) {
         pins1
     } else {
