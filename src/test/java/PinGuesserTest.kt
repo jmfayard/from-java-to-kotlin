@@ -1,11 +1,8 @@
 import org.junit.jupiter.api.Assertions
-import pin.PinGuesser.getPINs
-import pin.PinGuesser.combineSolutions
-import pin.PinGuesser
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import java.lang.RuntimeException
+import pin.PinGuesser
 import java.util.stream.Stream
 
 internal class PinGuesserTest {
@@ -38,7 +35,7 @@ internal class PinGuesserTest {
             return java.util.Set.of(*input.split(", ".toRegex()).toTypedArray())
         }
 
-        private fun testSingleDigitParameters(): Stream<Arguments> {
+        @JvmStatic fun testSingleDigitParameters(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of("1", java.util.Set.of("1", "2", "4")),
                 Arguments.of("2", java.util.Set.of("1", "2", "3", "5")),
@@ -61,7 +58,7 @@ internal class PinGuesserTest {
             )
         }
 
-        private fun invalidParams(): Stream<Arguments> {
+        @JvmStatic  fun invalidParams(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of("   "),
                 Arguments.of("A"),
