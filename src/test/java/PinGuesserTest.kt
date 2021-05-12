@@ -50,7 +50,7 @@ internal class PinGuesserTest {
                 Arguments.of("0", java.util.Set.of("0", "8")),
                 Arguments.of("00", java.util.Set.of("00", "08", "80", "88")),
                 Arguments.of("09", java.util.Set.of("06", "08", "09", "86", "88", "89")),
-                Arguments.of("", java.util.Set.of<Any>()),
+                Arguments.of("", java.util.Set.of("")),
                 Arguments.of("090", setOf("088, 880, 068, 860, 090, 898, 080, 888, 060, 868, 098, 890")),
                 Arguments.of(
                     "0900",

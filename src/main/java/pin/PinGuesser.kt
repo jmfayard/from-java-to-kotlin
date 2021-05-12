@@ -16,17 +16,10 @@ val mapPins = mapOf(
 fun getPINs(observedPin: String): Set<String> {
     require(observedPin.all { it in mapPins }) { "PIN $observedPin is invalid" }
 
-    for (c in observedPin.toCharArray()) {
-        if (!mapPins.containsKey(c)) throw RuntimeException("PIN $observedPin contains invalid character $c")
-    }
-    if (observedPin.isEmpty()) {
-        return setOf()
-    }
-    val pins1 = mapPins[observedPin[0]]!!
-    return if (observedPin.length == 1) {
-        pins1
-    } else {
-        combineSolutions(pins1, getPINs(observedPin.substring(1)))
+    return  observedPin.fold(initial = setOf("")) { acc: Set<String>, c: Char ->
+        val pinsForChar: Set<String> = mapPins[c]
+            ?: throw RuntimeException("PIN $observedPin is invalid")
+        combineSolutions(acc, pinsForChar)
     }
 }
 
