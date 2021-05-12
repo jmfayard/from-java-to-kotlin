@@ -26,13 +26,13 @@ internal class PinGuesserTest {
 
     fun testCombineSolutions() {
         val actual = pinGuesser.combineSolutions(java.util.Set.of("12", "34"), java.util.Set.of("8", "0"))
-        val expected = java.util.Set.of("128", "120", "348", "340")
+        val expected = setOf("128", "120", "348", "340")
         Assertions.assertEquals(actual, expected)
     }
 
     companion object {
         private fun setOf(input: String): Set<String> {
-            return java.util.Set.of(*input.split(", ".toRegex()).toTypedArray())
+            return setOf(*input.split(", ".toRegex()).toTypedArray())
         }
 
         @JvmStatic fun testSingleDigitParameters(): Stream<Arguments> {
