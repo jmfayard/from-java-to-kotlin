@@ -1,9 +1,5 @@
 package pin
 
-import java.util.stream.Collectors
-
-class PinGuesser {
-    companion object {
         val mapPins = mapOf(
             "1" to setOf("1", "2", "4"),
             "2" to setOf("1", "2", "3", "5"),
@@ -16,7 +12,6 @@ class PinGuesser {
             "9" to setOf("6", "8", "9"),
             "0" to setOf("0", "8"),
         )
-    }
 
     fun getPINs(observedPin: String): Set<String> {
         for (c in observedPin.toCharArray()) {
@@ -39,4 +34,3 @@ class PinGuesser {
                 "$pin1$pin2"
             }
         }.toSet()
-}
